@@ -1,4 +1,4 @@
-import { FunctionComponent, JSX, ReactNode, useContext, useState, useEffect } from 'react';
+import { FunctionComponent, JSX, ReactNode, useContext, useState } from 'react';
 import { Visualization } from '../../components/Visualization';
 import { CatalogModalProvider } from '../../providers/catalog-modal.provider';
 import { ActionConfirmationModalContextProvider } from '../../providers/action-confirmation-modal.provider';
@@ -7,6 +7,7 @@ import { Button, AlertVariant, Modal, ModalVariant } from '@patternfly/react-cor
 import { PlayIcon, CheckIcon, UploadIcon } from '@patternfly/react-icons';
 import './DesignPage.scss';
 import { SourceCodeContext } from '../../providers/source-code.provider';
+import { TokenContext } from '../../providers/source-code.provider';
 
 const BASE_URL = 'http://localhost:8081';
 
@@ -18,6 +19,7 @@ export const DesignPage: FunctionComponent<{ fallback?: ReactNode; additionalToo
 
   // Get YAML from SourceCodeContext
   const yamlContent = useContext(SourceCodeContext) ?? '';
+  const token = useContext(TokenContext);
 
   // Modal state for API feedback
   const [modalMessage, setModalMessage] = useState<string | null>(null);
@@ -26,14 +28,6 @@ export const DesignPage: FunctionComponent<{ fallback?: ReactNode; additionalToo
 
   // Modal state for confirmation before upload
   const [confirmOpen, setConfirmOpen] = useState(false);
-
-  // Auto close modal after 1.5 seconds for feedback modals
-  useEffect(() => {
-    if (modalMessage) {
-      const timer = setTimeout(() => setModalMessage(null), 1500);
-      return () => clearTimeout(timer);
-    }
-  }, [modalMessage]);
 
   const showModal = (title: string, message: string, variant: AlertVariant) => {
     setModalTitle(title);
@@ -47,7 +41,7 @@ export const DesignPage: FunctionComponent<{ fallback?: ReactNode; additionalToo
     try {
       const response = await fetch(`${BASE_URL}/routes/update`, {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain' }, // raw YAML text
+        headers: { 'Content-Type': 'text/plain', Authorization: `Bearer ${token}` }, // raw YAML text
         body: yamlContent,
       });
       const text = await response.text();
@@ -74,7 +68,7 @@ export const DesignPage: FunctionComponent<{ fallback?: ReactNode; additionalToo
       };
       const response = await fetch(`${BASE_URL}/routes/test`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(requestBody),
       });
       const data = await response.json();
@@ -95,7 +89,7 @@ export const DesignPage: FunctionComponent<{ fallback?: ReactNode; additionalToo
       };
       const response = await fetch(`${BASE_URL}/routes/validate`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(requestBody),
       });
       const data = await response.json();
@@ -160,6 +154,7 @@ export const DesignPage: FunctionComponent<{ fallback?: ReactNode; additionalToo
           isOpen={modalMessage !== null}
           onClose={() => setModalMessage(null)}
           aria-label="API feedback modal"
+          showClose={true}
           style={{
             borderRadius: 12,
             boxShadow: '0 12px 24px rgba(0,0,0,0.2)',

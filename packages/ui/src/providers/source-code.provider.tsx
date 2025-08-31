@@ -23,6 +23,9 @@ interface SourceCodeProviderProps extends PropsWithChildren {
 export const SourceCodeContext = createContext<string>('');
 export const SourceCodeApiContext = createContext<ISourceCodeApi>({ setCodeAndNotify: () => {} });
 
+// 🔑 Add a Token Context
+export const TokenContext = createContext<string | null>(null);
+
 export const SourceCodeProvider: FunctionComponent<SourceCodeProviderProps> = ({
   initialSourceCode = '',
   children,
@@ -30,11 +33,19 @@ export const SourceCodeProvider: FunctionComponent<SourceCodeProviderProps> = ({
   const eventNotifier = EventNotifier.getInstance();
   const [sourceCode, setSourceCode] = useState<string>(initialSourceCode);
 
-  // Initialize sourceCode from localStorage on mount
+  // 🔑 State for token
+  const [token, setToken] = useState<string | null>(null);
+
+  // Initialize sourceCode and token from localStorage on mount
   useLayoutEffect(() => {
     const savedCode = localStorage.getItem('sourceCode');
     if (savedCode && savedCode !== sourceCode) {
       setSourceCode(savedCode);
+    }
+
+    const savedToken = localStorage.getItem('auth_token');
+    if (savedToken) {
+      setToken(savedToken);
     }
   }, []); // run once on mount
 
@@ -55,7 +66,7 @@ export const SourceCodeProvider: FunctionComponent<SourceCodeProviderProps> = ({
     [eventNotifier],
   );
 
-  // Listen for postMessage from Site 1 to receive YAML and metadata
+  // Listen for postMessage from Site 1 to receive YAML and metadata + token
   useEffect(() => {
     function handleMessage(event: MessageEvent) {
       let expectedOrigin = '';
@@ -66,19 +77,25 @@ export const SourceCodeProvider: FunctionComponent<SourceCodeProviderProps> = ({
       }
       if (expectedOrigin && event.origin !== expectedOrigin) return;
 
-      const { sourceCode: incomingCode, routeTitle, returnUrl } = event.data || {};
+      const { sourceCode: incomingCode, routeTitle, returnUrl, token: incomingToken } = event.data || {};
+
       if (incomingCode) {
         setSourceCode(incomingCode);
         localStorage.setItem('sourceCode', incomingCode);
         if (routeTitle) localStorage.setItem('kaoto_route_title', routeTitle);
         if (returnUrl) localStorage.setItem('kaoto_return_url', returnUrl);
       }
+
+      // 🔑 Save token if sent from parent site
+      if (incomingToken) {
+        setToken(incomingToken);
+        localStorage.setItem('auth_token', incomingToken);
+      }
     }
 
     window.addEventListener('message', handleMessage);
 
     if (window.opener) {
-      // If you know Site 1 origin, you can send here instead of '*'
       window.opener.postMessage('KaotoReady', '*');
     }
 
@@ -96,7 +113,10 @@ export const SourceCodeProvider: FunctionComponent<SourceCodeProviderProps> = ({
 
   return (
     <SourceCodeApiContext.Provider value={sourceCodeApi}>
-      <SourceCodeContext.Provider value={sourceCode}>{children}</SourceCodeContext.Provider>
+      <SourceCodeContext.Provider value={sourceCode}>
+        {/* 🔑 Provide token to children */}
+        <TokenContext.Provider value={token}>{children}</TokenContext.Provider>
+      </SourceCodeContext.Provider>
     </SourceCodeApiContext.Provider>
   );
 };
