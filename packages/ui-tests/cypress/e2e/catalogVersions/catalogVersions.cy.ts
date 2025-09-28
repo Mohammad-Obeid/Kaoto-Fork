@@ -20,7 +20,7 @@ describe('Test for catalog versions', () => {
     { type: 'Spring Boot', version: 'Camel Spring Boot 4.8.6' },
     { type: 'Spring Boot', version: 'Camel Spring Boot 4.10.3.redhat-00019' },
     { type: 'Spring Boot', version: 'Camel Spring Boot 4.8.5.redhat-00008' },
-    { type: 'Spring Boot', version: 'Camel Spring Boot 4.4.0.redhat-00039' },
+    { type: 'Spring Boot', version: 'Camel Spring Boot 4.4.0.redhat-00046' },
   ];
   testData.forEach((data) => {
     it(`Catalog version test for ${data.version}`, { tags: ['weekly'] }, () => {

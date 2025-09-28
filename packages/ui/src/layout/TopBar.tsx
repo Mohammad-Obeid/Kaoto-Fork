@@ -62,7 +62,7 @@ export const TopBar: FunctionComponent<ITopBar> = (props) => {
           </MastheadToggle>
           <MastheadBrand data-codemods>
             <MastheadLogo data-codemods component={logoLink} className="masthead-logo">
-              <img className="shell__logo" src={logo} alt="Kaoto Logo" />
+              <img src={logo} alt="designer Logo" style={{ width: '130px', height: 'auto' }} />{' '}
             </MastheadLogo>
           </MastheadBrand>
         </MastheadMain>
