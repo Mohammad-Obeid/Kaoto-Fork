@@ -1,0 +1,1032 @@
+{
+  "hakeem": {
+    "component": {
+      "kind": "component",
+      "name": "hakeem",
+      "title": "hakeem  ",
+      "description": "DHIS2 Integration Endpoint for CSV uploads and data synchronization",
+      "deprecated": false,
+      "firstVersion": "1.0.0",
+      "label": "messaging,transformation",
+      "javaType": "com.middleware.dhis2.Dhis2Component",
+      "supportLevel": "Preview",
+      "groupId": "com.middleware",
+      "artifactId": "camel-dhis2-component",
+      "version": "1.0.0",
+      "scheme": "hakeem",
+      "extendsScheme": "",
+      "syntax": "hakeem:operation",
+      "async": false,
+      "api": false,
+      "consumerOnly": false,
+      "producerOnly": true,
+      "lenientProperties": false,
+      "remote": true
+    },
+    "componentProperties": {
+      "dhis2Service": {
+        "index": 0,
+        "kind": "property",
+        "displayName": "Dhis2 Service",
+        "group": "producer",
+        "label": "",
+        "required": false,
+        "type": "object",
+        "javaType": "com.middleware.dhis2.service.Dhis2Service",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "description": "DHIS2 service for handling operations"
+      },
+      "lazyStartProducer": {
+        "index": 1,
+        "kind": "property",
+        "displayName": "Lazy Start Producer",
+        "group": "producer",
+        "label": "producer",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": false,
+        "description": "Whether the producer should be started lazy (on the first message). By starting lazy you can use this to allow CamelContext and routes to startup in situations where a producer may otherwise fail during starting and cause the route to fail being started. By deferring this startup to be lazy then the startup failure can be handled during routing messages via Camel's routing error handlers. Beware that when the first message is processed then creating and starting the producer may take a little time and prolong the total processing time of the processing."
+      },
+      "autowiredEnabled": {
+        "index": 2,
+        "kind": "property",
+        "displayName": "Autowired Enabled",
+        "group": "advanced",
+        "label": "advanced",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": true,
+        "description": "Whether autowiring is enabled. This is used for automatic autowiring options (the option must be marked as autowired) by looking up in the registry to find if there is a single instance of matching type, which then gets configured on the component. This can be used for automatic configuring JDBC data sources, JMS connection factories, AWS Clients, etc."
+      }
+    },
+    "properties": {
+      "operation": {
+        "index": 0,
+        "kind": "path",
+        "displayName": "Operation",
+        "group": "producer",
+        "label": "",
+        "required": true,
+        "type": "string",
+        "javaType": "java.lang.String",
+        "deprecated": false,
+        "deprecationNote": "",
+        "autowired": false,
+        "secret": false,
+        "description": "The operation to perform. Options: csvUpload, guard, summarize"
+      },
+      "connectionTimeout": {
+        "index": 1,
+        "kind": "parameter",
+        "displayName": "Connection Timeout",
+        "group": "producer",
+        "label": "",
+        "required": false,
+        "type": "integer",
+        "javaType": "int",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": 30000,
+        "description": "Connection timeout in milliseconds"
+      },
+      "dryRun": {
+        "index": 2,
+        "kind": "parameter",
+        "displayName": "Dry Run",
+        "group": "producer",
+        "label": "",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": true,
+        "description": "Whether to perform dry-run before actual import"
+      },
+      "idScheme": {
+        "index": 3,
+        "kind": "parameter",
+        "displayName": "Id Scheme",
+        "group": "producer",
+        "label": "",
+        "required": false,
+        "type": "string",
+        "javaType": "java.lang.String",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": "CODE",
+        "description": "ID scheme to use (CODE or UID)"
+      },
+      "readTimeout": {
+        "index": 4,
+        "kind": "parameter",
+        "displayName": "Read Timeout",
+        "group": "producer",
+        "label": "",
+        "required": false,
+        "type": "integer",
+        "javaType": "int",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": 60000,
+        "description": "Read timeout in milliseconds"
+      },
+      "strategy": {
+        "index": 5,
+        "kind": "parameter",
+        "displayName": "Strategy",
+        "group": "producer",
+        "label": "",
+        "required": false,
+        "type": "string",
+        "javaType": "java.lang.String",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": "NEW_AND_UPDATES",
+        "description": "Import strategy (NEW, UPDATES, NEW_AND_UPDATES, DELETE)"
+      },
+      "lazyStartProducer": {
+        "index": 6,
+        "kind": "parameter",
+        "displayName": "Lazy Start Producer",
+        "group": "producer (advanced)",
+        "label": "producer,advanced",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": false,
+        "description": "Whether the producer should be started lazy (on the first message). By starting lazy you can use this to allow CamelContext and routes to startup in situations where a producer may otherwise fail during starting and cause the route to fail being started. By deferring this startup to be lazy then the startup failure can be handled during routing messages via Camel's routing error handlers. Beware that when the first message is processed then creating and starting the producer may take a little time and prolong the total processing time of the processing."
+      }
+    }
+  },
+  "notification": {
+    "component": {
+      "kind": "component",
+      "name": "notification",
+      "title": "Notification",
+      "description": "Use and Send Notifications in Kaoto Designer",
+      "deprecated": false,
+      "firstVersion": "1.0.0",
+      "label": "messaging",
+      "javaType": "com.middleware.NotificationComponent",
+      "supportLevel": "Preview",
+      "groupId": "com.middleware",
+      "artifactId": "Notifications-component",
+      "version": "1.0.0",
+      "scheme": "notification",
+      "extendsScheme": "",
+      "syntax": "notification",
+      "async": false,
+      "api": false,
+      "consumerOnly": false,
+      "producerOnly": true,
+      "lenientProperties": false,
+      "remote": true
+    },
+    "componentProperties": {
+      "lazyStartProducer": {
+        "index": 0,
+        "kind": "property",
+        "displayName": "Lazy Start Producer",
+        "group": "producer",
+        "label": "producer",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": false,
+        "description": "Whether the producer should be started lazy (on the first message). By starting lazy you can use this to allow CamelContext and routes to startup in situations where a producer may otherwise fail during starting and cause the route to fail being started."
+      },
+      "autowiredEnabled": {
+        "index": 1,
+        "kind": "property",
+        "displayName": "Autowired Enabled",
+        "group": "advanced",
+        "label": "advanced",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": true,
+        "description": "Whether autowiring is enabled for automatically configuring beans."
+      }
+    },
+    "headers": {},
+    "properties": {
+      "channelCode": {
+        "index": 0,
+        "kind": "parameter",
+        "displayName": "Channel Code",
+        "group": "common",
+        "label": "",
+        "required": true,
+        "type": "string",
+        "javaType": "java.lang.String",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": "",
+        "description": "Channel code for the notification."
+      },
+      "templateCode": {
+        "index": 1,
+        "kind": "parameter",
+        "displayName": "Template Code",
+        "group": "common",
+        "label": "",
+        "required": true,
+        "type": "string",
+        "javaType": "java.lang.String",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": "",
+        "description": "Template code for the notification."
+      },
+      "groupCodes": {
+        "index": 2,
+        "kind": "parameter",
+        "displayName": "Group Codes",
+        "group": "common",
+        "label": "",
+        "required": true,
+        "type": "array",
+        "javaType": "java.util.List<java.lang.String>",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": [],
+        "description": "Target group codes."
+      },
+      "lazyStartProducer": {
+        "index": 3,
+        "kind": "parameter",
+        "displayName": "Lazy Start Producer",
+        "group": "producer (advanced)",
+        "label": "producer,advanced",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": false,
+        "description": "Whether the producer should be started lazy (on the first message)."
+      }
+    },
+    "propertiesSchema": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "required": [
+        "channelCode",
+        "templateCode",
+        "groupCodes"
+      ],
+      "properties": {
+        "channelCode": {
+          "title": "Channel Code",
+          "description": "Channel code for the notification.",
+          "type": "string",
+          "$comment": "group:common",
+          "default": ""
+        },
+        "templateCode": {
+          "title": "Template Code",
+          "description": "Template code for the notification.",
+          "type": "string",
+          "$comment": "group:common",
+          "default": ""
+        },
+        "groupCodes": {
+          "title": "Group Codes",
+          "description": "Target group codes.",
+          "type": "string",
+          "javaType": "java.util.List<java.lang.String>",
+          "items": {
+            "type": "string"
+          },
+          "$comment": "group:common",
+          "default": []
+        },
+        "lazyStartProducer": {
+          "title": "Lazy Start Producer",
+          "description": "Whether the producer should be started lazy (on the first message).",
+          "type": "boolean",
+          "$comment": "group:producer (advanced)",
+          "default": false
+        }
+      }
+    }
+  },
+  "config": {
+    "component": {
+      "kind": "component",
+      "name": "config",
+      "title": "Config",
+      "description": "Use and Fetch System Configuration in Kaoto Designer",
+      "deprecated": false,
+      "firstVersion": "1.0.0",
+      "label": "core",
+      "javaType": "com.middleware.ConfigComponent",
+      "supportLevel": "Preview",
+      "groupId": "com.middleware",
+      "artifactId": "configuration-component",
+      "version": "1.0.0",
+      "scheme": "config",
+      "extendsScheme": "",
+      "syntax": "config",
+      "async": false,
+      "api": false,
+      "consumerOnly": false,
+      "producerOnly": true,
+      "lenientProperties": false,
+      "remote": true
+    },
+    "componentProperties": {
+      "lazyStartProducer": {
+        "index": 1,
+        "kind": "property",
+        "displayName": "Lazy Start Producer",
+        "group": "producer",
+        "label": "producer",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": false,
+        "description": "Whether the producer should be started lazy (on the first message)."
+      },
+      "autowiredEnabled": {
+        "index": 2,
+        "kind": "property",
+        "displayName": "Autowired Enabled",
+        "group": "advanced",
+        "label": "advanced",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": true,
+        "description": "Whether autowiring is enabled for automatically configuring beans."
+      }
+    },
+    "headers": {},
+    "properties": {
+      "code": {
+        "index": 0,
+        "kind": "parameter",
+        "displayName": "Code",
+        "group": "common",
+        "label": "",
+        "required": true,
+        "type": "string",
+        "javaType": "java.lang.String",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": "",
+        "description": "The code identifying the configuration group."
+      },
+      "lazyStartProducer": {
+        "index": 3,
+        "kind": "parameter",
+        "displayName": "Lazy Start Producer",
+        "group": "producer (advanced)",
+        "label": "producer,advanced",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": false,
+        "description": "Whether the producer should be started lazy (on the first message)."
+      }
+    },
+    "propertiesSchema": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "required": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "title": "Code",
+          "description": "The code identifying the configuration group.",
+          "type": "string",
+          "$comment": "group:common",
+          "default": ""
+        },
+        "lazyStartProducer": {
+          "title": "Lazy Start Producer",
+          "description": "Whether the producer should be started lazy (on the first message).",
+          "type": "boolean",
+          "$comment": "group:producer (advanced)",
+          "default": false
+        }
+      }
+    }
+  },
+  "integratedSystem": {
+    "component": {
+      "kind": "component",
+      "name": "integratedSystem",
+      "title": "IntegratedSystem",
+      "description": "Use and Fetch Integrated System in Kaoto Designer",
+      "deprecated": false,
+      "firstVersion": "1.0.0",
+      "label": "messaging",
+      "javaType": "com.middleware.IntegratedSystemComponent",
+      "supportLevel": "Preview",
+      "groupId": "com.middleware",
+      "artifactId": "integrated-system-component",
+      "version": "1.0.0",
+      "scheme": "integratedSystem",
+      "extendsScheme": "",
+      "syntax": "integratedSystem",
+      "async": false,
+      "api": false,
+      "consumerOnly": false,
+      "producerOnly": true,
+      "lenientProperties": false,
+      "remote": true
+    },
+    "componentProperties": {
+      "lazyStartProducer": {
+        "index": 0,
+        "kind": "property",
+        "displayName": "Lazy Start Producer",
+        "group": "producer",
+        "label": "producer",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": false,
+        "description": "Whether the producer should be started lazy (on the first message). By starting lazy you can use this to allow CamelContext and routes to startup in situations where a producer may otherwise fail during starting and cause the route to fail being started."
+      },
+      "autowiredEnabled": {
+        "index": 1,
+        "kind": "property",
+        "displayName": "Autowired Enabled",
+        "group": "advanced",
+        "label": "advanced",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": true,
+        "description": "Whether autowiring is enabled for automatically configuring beans."
+      }
+    },
+    "headers": {},
+    "properties": {
+      "code": {
+        "index": 0,
+        "kind": "parameter",
+        "displayName": "Code",
+        "group": "common",
+        "label": "",
+        "required": true,
+        "type": "string",
+        "javaType": "java.lang.String",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": "",
+        "description": "The system code identifying the integrated system."
+      },
+      "lazyStartProducer": {
+        "index": 1,
+        "kind": "parameter",
+        "displayName": "Lazy Start Producer",
+        "group": "producer (advanced)",
+        "label": "producer,advanced",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": false,
+        "description": "Whether the producer should be started lazy (on the first message)."
+      }
+    },
+    "propertiesSchema": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "required": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "title": "Code",
+          "description": "The system code identifying the integrated system.",
+          "type": "string",
+          "$comment": "group:common",
+          "default": ""
+        },
+        "lazyStartProducer": {
+          "title": "Lazy Start Producer",
+          "description": "Whether the producer should be started lazy (on the first message).",
+          "type": "boolean",
+          "$comment": "group:producer (advanced)",
+          "default": false
+        }
+      }
+    }
+  },
+  "integrationmapping": {
+    "component": {
+      "kind": "component",
+      "name": "integrationmapping",
+      "title": "Integration Mapping",
+      "description": "Integration Mapping endpoint.",
+      "deprecated": false,
+      "firstVersion": "1.0.0",
+      "label": "messaging,transformation",
+      "javaType": "com.middleware.IntegrationMappingComponent",
+      "supportLevel": "Preview",
+      "groupId": "com.middleware",
+      "artifactId": "Integration_Mapping",
+      "version": "1.0.0",
+      "scheme": "integrationmapping",
+      "extendsScheme": "",
+      "syntax": "integrationmapping",
+      "async": false,
+      "api": false,
+      "consumerOnly": false,
+      "producerOnly": true,
+      "lenientProperties": false,
+      "remote": true
+    },
+    "componentProperties": {
+      "lazyStartProducer": {
+        "index": 0,
+        "kind": "property",
+        "displayName": "Lazy Start Producer",
+        "group": "producer",
+        "label": "producer",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": false,
+        "description": "Whether the producer should be started lazy (on the first message). By starting lazy you can use this to allow CamelContext and routes to startup in situations where a producer may otherwise fail during starting and cause the route to fail being started."
+      },
+      "autowiredEnabled": {
+        "index": 1,
+        "kind": "property",
+        "displayName": "Autowired Enabled",
+        "group": "advanced",
+        "label": "advanced",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": true,
+        "description": "Whether autowiring is enabled for automatically configuring beans."
+      },
+      "integrationMappingService": {
+        "index": 2,
+        "kind": "property",
+        "displayName": "Integration Mapping Service",
+        "group": "internal",
+        "label": "internal",
+        "required": false,
+        "type": "object",
+        "javaType": "com.middleware.service.IntegrationMappingService",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "description": "Integration Mapping Service for handling operations."
+      }
+    },
+    "headers": {},
+    "properties": {
+      "code": {
+        "index": 0,
+        "kind": "parameter",
+        "displayName": "Code",
+        "group": "common",
+        "label": "",
+        "required": true,
+        "type": "string",
+        "javaType": "java.lang.String",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": "default",
+        "description": "The system code identifying the integrated system."
+      },
+      "operation": {
+        "index": 1,
+        "kind": "path",
+        "displayName": "Operation",
+        "group": "producer",
+        "label": "",
+        "required": false,
+        "type": "string",
+        "javaType": "java.lang.String",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "description": "Dummy operation path for Camel syntax."
+      },
+      "mapping": {
+        "index": 2,
+        "kind": "parameter",
+        "displayName": "Mapping",
+        "group": "producer",
+        "label": "",
+        "required": false,
+        "type": "string",
+        "javaType": "java.lang.String",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "description": "Middleware API mapping name (e.g., healthmap, education)."
+      },
+      "connectionTimeout": {
+        "index": 3,
+        "kind": "parameter",
+        "displayName": "Connection Timeout",
+        "group": "producer",
+        "label": "",
+        "required": false,
+        "type": "integer",
+        "javaType": "int",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": 30000,
+        "description": "Connection timeout in milliseconds."
+      },
+      "readTimeout": {
+        "index": 4,
+        "kind": "parameter",
+        "displayName": "Read Timeout",
+        "group": "producer",
+        "label": "",
+        "required": false,
+        "type": "integer",
+        "javaType": "int",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": 60000,
+        "description": "Read timeout in milliseconds."
+      },
+      "validateParams": {
+        "index": 5,
+        "kind": "parameter",
+        "displayName": "Validate Params",
+        "group": "producer",
+        "label": "",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": true,
+        "description": "Whether to validate parameters before processing."
+      },
+      "lazyStartProducer": {
+        "index": 6,
+        "kind": "parameter",
+        "displayName": "Lazy Start Producer",
+        "group": "producer (advanced)",
+        "label": "producer,advanced",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": false,
+        "description": "Whether the producer should be started lazy (on the first message)."
+      }
+    },
+    "propertiesSchema": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "required": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "title": "Code",
+          "description": "The system code identifying the integrated system.",
+          "type": "string",
+          "$comment": "group:common",
+          "default": "default"
+        },
+        "operation": {
+          "title": "Operation",
+          "description": "Dummy operation path for Camel syntax.",
+          "type": "string",
+          "$comment": "group:producer"
+        },
+        "mapping": {
+          "title": "Mapping",
+          "description": "Middleware API mapping name (e.g., healthmap, education).",
+          "type": "string",
+          "$comment": "group:producer"
+        },
+        "connectionTimeout": {
+          "title": "Connection Timeout",
+          "description": "Connection timeout in milliseconds.",
+          "type": "integer",
+          "$comment": "group:producer",
+          "default": 30000
+        },
+        "readTimeout": {
+          "title": "Read Timeout",
+          "description": "Read timeout in milliseconds.",
+          "type": "integer",
+          "$comment": "group:producer",
+          "default": 60000
+        },
+        "validateParams": {
+          "title": "Validate Params",
+          "description": "Whether to validate parameters before processing.",
+          "type": "boolean",
+          "$comment": "group:producer",
+          "default": true
+        },
+        "lazyStartProducer": {
+          "title": "Lazy Start Producer",
+          "description": "Whether the producer should be started lazy (on the first message).",
+          "type": "boolean",
+          "$comment": "group:producer (advanced)",
+          "default": false
+        }
+      }
+    }
+  },
+  "errormappingcomponent": {
+    "component": {
+      "kind": "component",
+      "name": "errormappingcomponent",
+      "title": "ErrorMappingComponent",
+      "description": "Use and Apply Error Mapping in Kaoto Designer by referencing an existing mapping ID.",
+      "deprecated": false,
+      "firstVersion": "1.0.0",
+      "label": "messaging",
+      "javaType": "com.middleware.component.ErrorMappingComponent",
+      "supportLevel": "Preview",
+      "groupId": "com.middleware.component",
+      "artifactId": "camel-error-mapping",
+      "version": "1.0.0",
+      "scheme": "errormappingcomponent",
+      "extendsScheme": "",
+      "syntax": "errormappingcomponent",
+      "async": false,
+      "api": false,
+      "consumerOnly": false,
+      "producerOnly": true,
+      "lenientProperties": false,
+      "remote": true
+    },
+    "componentProperties": {
+      "lazyStartProducer": {
+        "index": 0,
+        "kind": "property",
+        "displayName": "Lazy Start Producer",
+        "group": "producer",
+        "label": "producer",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": false,
+        "description": "Whether the producer should be started lazy (on the first message). By starting lazy you can use this to allow CamelContext and routes to startup in situations where a producer may otherwise fail during starting and cause the route to fail being started."
+      },
+      "autowiredEnabled": {
+        "index": 1,
+        "kind": "property",
+        "displayName": "Autowired Enabled",
+        "group": "advanced",
+        "label": "advanced",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": true,
+        "description": "Whether autowiring is enabled for automatically configuring beans."
+      }
+    },
+    "headers": {},
+    "properties": {
+      "code": {
+        "index": 0,
+        "kind": "parameter",
+        "displayName": "Code",
+        "group": "common",
+        "label": "",
+        "required": true,
+        "type": "string",
+        "javaType": "java.lang.String",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": "",
+        "description": "The ID of the error mapping to fetch and apply."
+      },
+      "lazyStartProducer": {
+        "index": 1,
+        "kind": "parameter",
+        "displayName": "Lazy Start Producer",
+        "group": "producer (advanced)",
+        "label": "producer,advanced",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": false,
+        "description": "Whether the producer should be started lazy (on the first message)."
+      }
+    },
+    "propertiesSchema": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "required": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "title": "Code",
+          "description": "The ID of the error mapping to fetch and apply.",
+          "type": "string",
+          "$comment": "group:common",
+          "default": ""
+        },
+        "lazyStartProducer": {
+          "title": "Lazy Start Producer",
+          "description": "Whether the producer should be started lazy (on the first message).",
+          "type": "boolean",
+          "$comment": "group:producer (advanced)",
+          "default": false
+        }
+      }
+    }
+  },
+  "errormapper": {
+    "component": {
+      "kind": "component",
+      "name": "errormapper",
+      "title": "Error Mapper",
+      "description": "Represents an ErrorMapper endpoint. This component will process a failed REST response and map it to a standardized error structure.",
+      "deprecated": false,
+      "firstVersion": "1.0.0",
+      "label": "messaging,transformation",
+      "javaType": "com.middleware.component.errormapper.ErrorMapperComponent",
+      "supportLevel": "Preview",
+      "groupId": "com.middleware.component",
+      "artifactId": "camel-errormapper-component",
+      "version": "1.0.0-SNAPSHOT",
+      "scheme": "errormapper",
+      "extendsScheme": "",
+      "syntax": "errormapper:operation",
+      "async": false,
+      "api": false,
+      "consumerOnly": false,
+      "producerOnly": true,
+      "lenientProperties": false,
+      "remote": true
+    },
+    "componentProperties": {
+      "errorMappingService": {
+        "index": 0,
+        "kind": "property",
+        "displayName": "Error Mapping Service",
+        "group": "producer",
+        "required": false,
+        "type": "object",
+        "javaType": "com.middleware.component.errormapper.service.ErrorMappingService",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "description": "Sets the ErrorMappingService. This method can be used by Spring to autowire the service into the component when it's used within a Spring Boot application."
+      },
+      "lazyStartProducer": {
+        "index": 1,
+        "kind": "property",
+        "displayName": "Lazy Start Producer",
+        "group": "producer",
+        "label": "producer",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": false,
+        "description": "Whether the producer should be started lazy (on the first message). By starting lazy you can use this to allow CamelContext and routes to startup in situations where a producer may otherwise fail during starting and cause the route to fail being started. By deferring this startup to be lazy then the startup failure can be handled during routing messages via Camel's routing error handlers. Beware that when the first message is processed then creating and starting the producer may take a little time and prolong the total processing time of the processing."
+      },
+      "autowiredEnabled": {
+        "index": 2,
+        "kind": "property",
+        "displayName": "Autowired Enabled",
+        "group": "advanced",
+        "label": "advanced",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": true,
+        "description": "Whether autowiring is enabled. This is used for automatic autowiring options (the option must be marked as autowired) by looking up in the registry to find if there is a single instance of matching type, which then gets configured on the component. This can be used for automatic configuring JDBC data sources, JMS connection factories, AWS Clients, etc."
+      }
+    },
+    "properties": {
+      "operation": {
+        "index": 0,
+        "kind": "path",
+        "displayName": "Operation",
+        "group": "producer",
+        "label": "",
+        "required": true,
+        "type": "string",
+        "javaType": "java.lang.String",
+        "deprecated": false,
+        "deprecationNote": "",
+        "autowired": false,
+        "secret": false,
+        "description": "The operation or context for error mapping. E.g., 'restFailure'."
+      },
+      "includeOriginalMessage": {
+        "index": 1,
+        "kind": "parameter",
+        "displayName": "Include Original Message",
+        "group": "producer",
+        "label": "",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": true,
+        "description": "Whether to include the original system error message in the mapped response."
+      },
+      "lazyStartProducer": {
+        "index": 2,
+        "kind": "parameter",
+        "displayName": "Lazy Start Producer",
+        "group": "producer (advanced)",
+        "label": "producer,advanced",
+        "required": false,
+        "type": "boolean",
+        "javaType": "boolean",
+        "deprecated": false,
+        "autowired": false,
+        "secret": false,
+        "defaultValue": false,
+        "description": "Whether the producer should be started lazy (on the first message). By starting lazy you can use this to allow CamelContext and routes to startup in situations where a producer may otherwise fail during starting and cause the route to fail being started. By deferring this startup to be lazy then the startup failure can be handled during routing messages via Camel's routing error handlers. Beware that when the first message is processed then creating and starting the producer may take a little time and prolong the total processing time of the processing."
+      }
+    }
+  }
+}

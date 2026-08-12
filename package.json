@@ -23,6 +23,8 @@
     "typescript": "5.5.4"
   },
   "scripts": {
+    "postinstall": "yarn workspace @kaoto/kaoto run inject-custom-components",
+    "inject-custom-components": "yarn workspace @kaoto/kaoto run inject-custom-components",
     "version": "lerna version",
     "publish": "lerna publish from-package"
   },
