@@ -11,8 +11,8 @@ import './DesignPage.scss';
 import { SourceCodeContext } from '../../providers/source-code.provider';
 import { TokenContext } from '../../providers/source-code.provider';
 
-const BASE_URL = 'http://localhost:8081/api';
-// const BASE_URL = '/mw/api';
+// const BASE_URL = 'http://localhost:8081/api';
+const BASE_URL = '/mw/api';
 
 export const DesignPage: FunctionComponent<{ fallback?: ReactNode; additionalToolbarControls?: JSX.Element[] }> = (
   props,
