@@ -124,8 +124,83 @@ public ErrorMappingBridgeService errorMappingBridgeService() {
 
 <p>This JSON is typically placed under:</p>
 
-<pre><code>src/generated/resources/com/middleware/component/&lt;scheme&gt;.json
+<pre><code>Component/&lt;component-name&gt;/src/generated/resources/com/middleware/component/&lt;scheme&gt;.json
 </code></pre>
+
+<hr/>
+
+<h2>🎨 Kaoto Fork — Catalog Integration</h2>
+
+<p>
+Custom components are registered in Kaoto through a <strong>single consolidated catalog file</strong> in the fork.
+Do not patch <code>node_modules</code> or <code>packages/ui/dist</code> manually — those are regenerated on install/build.
+</p>
+
+<h3>📁 Key paths (Kaoto-Fork repo)</h3>
+
+<table border="1" cellspacing="0" cellpadding="6">
+<tr><th>Path</th><th>Purpose</th></tr>
+<tr>
+  <td><code>Kaoto-Fork/packages/ui/custom-components/components.json</code></td>
+  <td><strong>Source of truth</strong> — all custom component Kaoto definitions (one entry per scheme).</td>
+</tr>
+<tr>
+  <td><code>Kaoto-Fork/packages/ui/scripts/inject-custom-components.mjs</code></td>
+  <td>Merge script — injects entries from <code>components.json</code> into every <code>@kaoto/camel-catalog</code> aggregate components file.</td>
+</tr>
+<tr>
+  <td><code>Kaoto-Fork/node_modules/@kaoto/camel-catalog/dist/camel-catalog/</code></td>
+  <td>Runtime catalog loaded by Kaoto (updated automatically by the inject script).</td>
+</tr>
+<tr>
+  <td><code>Kaoto-Fork/packages/ui/dist/camel-catalog/</code></td>
+  <td>Built catalog copied into the UI bundle on <code>yarn build</code> (also receives injected components via the same script before build).</td>
+</tr>
+</table>
+
+<h3>🧩 Current custom components in <code>components.json</code></h3>
+
+<ul>
+  <li><code>hakeem</code></li>
+  <li><code>notification</code></li>
+  <li><code>config</code></li>
+  <li><code>integratedSystem</code></li>
+  <li><code>integrationmapping</code></li>
+  <li><code>errormappingcomponent</code></li>
+  <li><code>errormapper</code></li>
+</ul>
+
+<h3>➕ Add or update a component in Kaoto</h3>
+
+<ol>
+  <li>Build/install the Camel component (see <strong>Build &amp; Install</strong> below).</li>
+  <li>Copy or merge its generated JSON metadata into:
+    <pre><code>Kaoto-Fork/packages/ui/custom-components/components.json
+</code></pre>
+    Use the component <code>scheme</code> as the top-level key (same pattern as existing entries).
+  </li>
+  <li>Re-inject into the catalog:
+    <pre><code>cd Kaoto-Fork
+yarn inject-custom-components
+</code></pre>
+    Or restart Kaoto — injection also runs automatically before <code>start</code> / <code>build</code>.
+  </li>
+  <li>Commit both the Java component and the updated <code>components.json</code>.</li>
+</ol>
+
+<h3>🖥️ Fresh clone — run Kaoto with custom components</h3>
+
+<pre><code>git clone https://github.com/Mohammad-Obeid/Kaoto-Fork.git
+cd Kaoto-Fork
+yarn install          # runs postinstall → inject-custom-components
+yarn workspace @kaoto/kaoto run start
+</code></pre>
+
+<p>Open <code>http://localhost:5173</code> and search the component catalog for your scheme (e.g. <code>integratedSystem</code>).</p>
+
+<p>
+If you cloned before pulling the latest <code>components.json</code>, run <code>yarn inject-custom-components</code> once, then start again.
+</p>
 
 <hr/>
 

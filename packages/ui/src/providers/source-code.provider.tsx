@@ -80,10 +80,14 @@ export const SourceCodeProvider: FunctionComponent<SourceCodeProviderProps> = ({
       const { sourceCode: incomingCode, routeTitle, returnUrl, token: incomingToken } = event.data || {};
 
       if (incomingCode) {
-        setSourceCode(incomingCode);
-        localStorage.setItem('sourceCode', incomingCode);
+        // Must notify subscribers so the canvas/entities recreate from the new YAML.
+        // setSourceCode alone only updates the text context and leaves the previous route visible.
+        setCodeAndNotify(incomingCode);
         if (routeTitle) localStorage.setItem('kaoto_route_title', routeTitle);
         if (returnUrl) localStorage.setItem('kaoto_return_url', returnUrl);
+        if (window.opener) {
+          window.opener.postMessage({ type: 'KaotoSourceApplied', routeTitle }, expectedOrigin || '*');
+        }
       }
 
       // 🔑 Save token if sent from parent site
@@ -95,14 +99,22 @@ export const SourceCodeProvider: FunctionComponent<SourceCodeProviderProps> = ({
 
     window.addEventListener('message', handleMessage);
 
-    if (window.opener) {
-      window.opener.postMessage('KaotoReady', '*');
-    }
+    const announceReady = () => {
+      if (window.opener) {
+        window.opener.postMessage('KaotoReady', '*');
+      }
+    };
+
+    // Announce ready immediately and retry briefly so the parent does not miss
+    // KaotoReady during React Strict Mode remount or slow listener attachment.
+    announceReady();
+    const readyRetries = [100, 300, 800, 1500].map((ms) => window.setTimeout(announceReady, ms));
 
     return () => {
       window.removeEventListener('message', handleMessage);
+      readyRetries.forEach((id) => window.clearTimeout(id));
     };
-  }, []);
+  }, [setCodeAndNotify]);
 
   const sourceCodeApi: ISourceCodeApi = useMemo(
     () => ({
